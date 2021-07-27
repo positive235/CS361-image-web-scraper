@@ -36,23 +36,23 @@ var images = [];
 
     // Sending a receiving data in JSON format using GET method
 
-    var xhr = new XMLHttpRequest();
-    var url = "https://image-web-scraper-microservice.herokuapp.com/?data=" + encodeURIComponent(JSON.parse(JSON.stringify(images)));
-    xhr.open("GET", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var json = JSON.parse(xhr.responseText);
-            console.log(json);
-        }
-    };
-    xhr.send();
+    // var xhr = new XMLHttpRequest();
+    // var url = "https://image-web-scraper-microservice.herokuapp.com/?data=" + encodeURIComponent(JSON.parse(JSON.stringify(images)));
+    // xhr.open("GET", url, true);
+    // xhr.setRequestHeader("Content-Type", "application/json");
+    // xhr.onreadystatechange = function () {
+    //     if (xhr.readyState === 4 && xhr.status === 200) {
+    //         var json = JSON.parse(xhr.responseText);
+    //         console.log(json);
+    //     }
+    // };
+    // xhr.send();
     // // images to localhost:5000/images
-    // app.get('/images', (req, res) => {
-    //     //res.send(JSON.stringify({ ...images }));
-    //     res.send(JSON.parse(JSON.stringify(images)));
-    // });
-    // const server = app.listen(5000)
+    app.get('/images', (req, res) => {
+        //res.send(JSON.stringify({ ...images }));
+        res.send(JSON.parse(JSON.stringify(images)));
+    });
+    const server = app.listen(5000)
     // console.log('Example app listening at http://localhost:%s', port);    
 })();
 
