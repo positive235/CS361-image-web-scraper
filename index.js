@@ -60,8 +60,8 @@ var images = [];
         //res.send(JSON.stringify({ ...images }));
         res.send(JSON.parse(JSON.stringify(images)));
     });
-    const server = app.listen(5000)
-    // console.log('Example app listening at %s', port);    
+    const server = app.listen(port)
+    console.log('Example app listening at %s', port);    
 })();
 
 
