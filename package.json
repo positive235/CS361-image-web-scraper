@@ -1,0 +1,18 @@
+{
+  "name": "js-microservice",
+  "version": "1.0.0",
+  "description": "image web scraper in javascript",
+  "main": "image-web-scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon image-web-scraper.js"
+  },
+  "author": "Hae-Ji Park",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^10.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
