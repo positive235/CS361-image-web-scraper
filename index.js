@@ -1,9 +1,6 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
-const path = require('path');
 const app = express();
-
-
 
 const urls = [
     'https://unsplash.com/s/photos/natural',
@@ -50,21 +47,21 @@ var images = [];
     // };
     // xhr.send();
     // // images to localhost:5000/images
-    app.use(express.static(path.join(__dirname, 'public')))
-    app.set('views', path.join(__dirname, 'views'))
-    app.set('view engine', 'ejs')
+
+
     app.get('/', (req, res) => res.send('hello'))
     
     app.get('/images', (req, res) => {
         //res.send(JSON.stringify({ ...images }));
         res.send(JSON.parse(JSON.stringify(images)));
     });
+
     var server_port = process.env.PORT || 3000;
-    var server_host = '0.0.0.0';
-    app.listen(server_port, server_host, function() {
+    
+    app.listen(server_port, function() {
         console.log('Listening on port %d', server_port);
     })
-    //console.log('Example app listening at %s', port);    
+
 })();
 
 
