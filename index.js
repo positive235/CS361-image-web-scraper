@@ -37,10 +37,13 @@ app.get('/a-nature-image', (req, res) => {
             
         await page.goto(urls[Math.floor(Math.random() * urls.length)]);
         const resultsSelector = '.oCCRx';
-        const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
-        results.forEach(result => a_set_images.push(result)); 
-        a_random_image = a_set_images[Math.floor(Math.random() * a_set_images.length)]
-        res.send(JSON.stringify(a_random_image));
+        const imageUrl = await page.evaluate(() => document.querySelector('.oCCRx').getAttribute('src'));
+        res.send(JSON.stringify({'imageUrl': imageUrl}));
+        
+        // const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
+        // results.forEach(result => a_set_images.push(result)); 
+        // a_random_image = a_set_images[Math.floor(Math.random() * a_set_images.length)]
+        //res.send(JSON.stringify(a_random_image));
 
         await browser.close();  
     })();
