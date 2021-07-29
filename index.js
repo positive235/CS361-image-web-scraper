@@ -34,8 +34,11 @@ app.get('/a-nature-image', (req, res) => {
         let a_set_images = [];
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-            
-        await page.goto(urls[Math.floor(Math.random() * urls.length)]);
+        await page.goto(urls[Math.floor(Math.random() * urls.length)], {
+            waitUntil: 'load',  
+            timeout: 0
+        });
+        //await page.goto(urls[Math.floor(Math.random() * urls.length)]);
         const resultsSelector = '.oCCRx';
         const imageUrl = await page.evaluate(() => document.querySelector('.oCCRx').getAttribute('src'));
         res.send(JSON.stringify({'imageUrl': imageUrl}));
