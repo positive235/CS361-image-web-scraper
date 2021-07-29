@@ -36,7 +36,7 @@ app.get('/a-nature-image', (req, res) => {
         const page = await browser.newPage();
         await page.goto(urls[Math.floor(Math.random() * urls.length)], {
             waitUntil: 'load',  
-            timeout: 0
+            timeout: 60000
         });
         //await page.goto(urls[Math.floor(Math.random() * urls.length)]);
         const resultsSelector = '.oCCRx';
