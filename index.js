@@ -1,3 +1,7 @@
+// Author: Hae-Ji Park (github.com/positive235)
+// Date: Jul 2021
+// Summary: Nature image web scraping
+
 const puppeteer = require('puppeteer');
 const express = require('express');
 const app = express();
@@ -19,52 +23,66 @@ const urls = [
     'https://unsplash.com/s/photos/vegetation'
 ]
 
-var images = [];
+// home page
+app.get('/', (req, res) => res.send("Welcome to Nature Image Web Scraper(Author: Hae-Ji Park). \n\n\n" +
+    "Go to '/a-nature-image' to get a nature image randomly. \n\n" +
+    "Go to '/a-set-of-nature-images' to get a set of nature images randomly (About 8 images) . \n\n" +
+    "Go to '/all-nature-images' to get all nature images(About 100 images. (<1 min))."));
 
-(async() => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    for (var i = 0; i < urls.length; i++) {
-        await page.goto(urls[i]);
+// a nature image
+app.get('/a-nature-image', (req, res) => {
+    (async () =>{
+        let a_set_images = [];
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+            
+        await page.goto(urls[Math.floor(Math.random() * urls.length)]);
         const resultsSelector = '.oCCRx';
         const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
-        results.forEach(result => images.push(result));    
-    }
-    await browser.close(); 
+        results.forEach(result => a_set_images.push(result)); 
+        a_random_image = a_set_images[Math.floor(Math.random() * a_set_images.length)]
+        res.send(JSON.parse(JSON.stringify(a_random_image)));
 
-    // Sending a receiving data in JSON format using GET method
+        await browser.close();  
+    })();
+});
 
-    // var xhr = new XMLHttpRequest();
-    // var url = "https://image-web-scraper-microservice.herokuapp.com/?data=" + encodeURIComponent(JSON.parse(JSON.stringify(images)));
-    // xhr.open("GET", url, true);
-    // xhr.setRequestHeader("Content-Type", "application/json");
-    // xhr.onreadystatechange = function () {
-    //     if (xhr.readyState === 4 && xhr.status === 200) {
-    //         var json = JSON.parse(xhr.responseText);
-    //         console.log(json);
-    //     }
-    // };
-    // xhr.send();
-    // // images to localhost:5000/images
-
-
-    app.get('/', (req, res) => res.send('hello'))
+// eight to ten nature images
+app.get('/a-set-of-nature-images', (req, res) => {
+    (async () =>{
+        let a_set_images = [];
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+            
+        await page.goto(urls[Math.floor(Math.random() * urls.length)]);
+        const resultsSelector = '.oCCRx';
+        const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
+        results.forEach(result => a_set_images.push(result)); 
+        res.send(JSON.parse(JSON.stringify(a_set_images)));
+            
+        await browser.close();  
+    })();
+});
     
-    app.get('/images', (req, res) => {
-        //res.send(JSON.stringify({ ...images }));
-        res.send(JSON.parse(JSON.stringify(images)));
-    });
+// all nature images (about 100)
+app.get('/all-nature-images', (req, res) => {
+    (async () =>{
+        let all_images = [];
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        for (var i = 0; i < urls.length; i++) {
+            await page.goto(urls[i]);
+            const resultsSelector = '.oCCRx';
+            const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
+            results.forEach(result => all_images.push(result));    
+        }
+        res.send(JSON.parse(JSON.stringify(all_images)));
+        await browser.close();
+    })();        
+});
 
-    var server_port = process.env.PORT || 3000;
+var server_port = process.env.PORT || 3000;
     
-    app.listen(server_port, function() {
-        console.log('Listening on port %d', server_port);
-    })
-
-})();
-
-
-
-
-
+app.listen(server_port, function() {
+    console.log('Listening on port %d', server_port);
+});
