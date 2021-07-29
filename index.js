@@ -27,7 +27,7 @@ const urls = [
 app.get('/', (req, res) => res.send("Welcome to Nature Image Web Scraper(Author: Hae-Ji Park). \n\n\n" +
     "Go to '/a-nature-image' to get a nature image randomly. \n\n" +
     "Go to '/a-set-of-nature-images' to get a set of nature images randomly (About 8 images) . \n\n" +
-    "Go to '/all-nature-images' to get all nature images(About 100 images. (<1 min))."));
+    "Go to '/all-nature-images' to get all nature images(About 100 images))."));
 
 // a nature image
 app.get('/a-nature-image', (req, res) => {
@@ -41,7 +41,7 @@ app.get('/a-nature-image', (req, res) => {
         const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
         results.forEach(result => a_set_images.push(result)); 
         a_random_image = a_set_images[Math.floor(Math.random() * a_set_images.length)]
-        res.send(JSON.parse(JSON.stringify(a_random_image)));
+        res.send(JSON.stringify(a_random_image));
 
         await browser.close();  
     })();
