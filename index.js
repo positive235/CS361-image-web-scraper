@@ -33,7 +33,7 @@ var images = [];
         //await page.goto(urls[i]);
         await page.goto(urls[i], {
             waitUntil: 'networkidle2',
-            timeout: 60000000
+            timeout: 6000000
         });
         const resultsSelector = '.oCCRx';
         const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
