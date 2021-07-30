@@ -23,71 +23,43 @@ const urls = [
     'https://unsplash.com/s/photos/vegetation'
 ]
 
-// home page
-app.get('/', (req, res) => res.send("Welcome to Nature Image Web Scraper(Author: Hae-Ji Park). \n\n\n" +
-    "Go to '/a-nature-image' to get a nature image randomly. \n\n" +
-    "Go to '/a-set-of-nature-images' to get a set of nature images randomly (About 8 images)."));
+var images = [];
 
-// a nature image
-app.get('/a-nature-image', (req, res) => {
-    (async () =>{
-        let a_set_images = [];
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto(urls[Math.floor(Math.random() * urls.length)], {
-            waitUntil: 'load',  
-            timeout: 60000
+(async() => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    for (var i = 0; i < urls.length; i++) {
+        //await page.goto(urls[i]);
+        await page.goto(urls[i], {
+            waitUntil: 'networkidle2',
+            timeout: 60000000
         });
-        //await page.goto(urls[Math.floor(Math.random() * urls.length)]);
-        const resultsSelector = '.oCCRx';
-        const imageUrl = await page.evaluate(() => document.querySelector('.oCCRx').getAttribute('src'));
-        res.send(JSON.stringify({'imageUrl': imageUrl}));
-        
-        // const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
-        // results.forEach(result => a_set_images.push(result)); 
-        // a_random_image = a_set_images[Math.floor(Math.random() * a_set_images.length)]
-        //res.send(JSON.stringify(a_random_image));
-
-        await browser.close();  
-    })();
-});
-
-// eight to ten nature images
-app.get('/a-set-of-nature-images', (req, res) => {
-    (async () =>{
-        let a_set_images = [];
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-            
-        await page.goto(urls[Math.floor(Math.random() * urls.length)]);
         const resultsSelector = '.oCCRx';
         const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
-        results.forEach(result => a_set_images.push(result)); 
-        res.send(JSON.parse(JSON.stringify(a_set_images)));
-            
-        await browser.close();  
-    })();
-});
-    
-// // all nature images (about 100)
-// app.get('/all-nature-images', (req, res) => {
-//     (async () =>{
-//         let all_images = [];
-//         const browser = await puppeteer.launch();
-//         const page = await browser.newPage();
-//         for (var i = 0; i < urls.length; i++) {
-//             await page.goto(urls[i]);
-//             const resultsSelector = '.oCCRx';
-//             const results = await page.$$eval(resultsSelector, el => el.map(el => el.getAttribute('src')));
-//             results.forEach(result => all_images.push(result));    
-//         }
-//         res.send(JSON.parse(JSON.stringify(all_images)));
-//         await browser.close();
-//     })();        
-// });
+        results.forEach(result => images.push(result));    
+    }
+    await browser.close(); 
 
-var server_port = process.env.PORT || 3000;
+    // home page
+    app.get('/', (req, res) => res.send("Welcome to Nature Image Web Scraper(Author: Hae-Ji Park). \n\n\n" +
+        "Go to '/a-nature-image' to get a nature image randomly. \n\n" +
+        "Go to '/all-nature-images' to get about 100 nature images."));   
     
-app.listen(server_port, function() {
-    console.log('Listening on port %d', server_port);
-});
+    app.get('/a-nature-image', (req, res) => {
+        a_random_image = images[Math.floor(Math.random() * images.length)]
+        res.send(JSON.stringify(a_random_image));
+    });
+
+    app.get('/all-nature-images', (req, res) => {
+        //res.send(JSON.stringify({ ...images }));
+        res.send(JSON.parse(JSON.stringify(images)));
+    });
+
+    var server_port = process.env.PORT || 3000;
+    
+    app.listen(server_port, function() {
+        console.log('Listening on port %d', server_port);
+    })
+
+})();
