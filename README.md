@@ -13,3 +13,8 @@ Returns nature image URLs.
 
 (It takes <3 seconds on my local computer. But it takes about 10 seconds on my private website deployed by Google Cloud)
 
+
+## To deploy on google cloud
+
+1. Rename "index.js" to "server.js"
+2. Follow the instruction at https://cloud.google.com/nodejs/getting-started
