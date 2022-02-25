@@ -15,6 +15,5 @@ Returns nature image URLs.
 
 
 ## To deploy on google cloud
-1. Replace the word ".oCCRx" in the "index.js" with appropriate image class name at https://unsplash.com/ (They sometimes change.)
 1. Rename "index.js" to "server.js" (In order to use "npm start" without error)
 2. Follow the instruction at https://cloud.google.com/nodejs/getting-started
